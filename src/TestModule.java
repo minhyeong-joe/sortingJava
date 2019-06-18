@@ -1,67 +1,143 @@
 
 public class TestModule {
 	
-	static void printArray(int[] arr) {
-		System.out.print("[ ");
-		for(int i = 0; i < arr.length; i++) {
-			if(i == arr.length-1)
-				System.out.printf("%d ", arr[i]);
-			else
-				System.out.printf("%d, ", arr[i]);
-		}
-		System.out.println("] ");
+	static boolean enableArrayPrint = false;
+	final static int ARRAY_SIZE = 100000;
+	
+	public static void main(String[] args) {
+		long startTime, endTime;
+		// Initialized array of randomly ordered integers
+		int[] sortThis = new int[ARRAY_SIZE];
+		int[] resetArr = new int[ARRAY_SIZE];
+		generateRandomArray(sortThis);
+		copyArray(resetArr, sortThis);
+		
+		// Print initial array
+		System.out.println("********* Initial Array *********");
+		printArray(sortThis);
+		System.out.println();
+		
+		/************* insertionSort Test *************/
+		System.out.println("********* InsertionSort Test *********");
+		startTime = System.nanoTime();
+		insertionSort.sort(sortThis);
+		endTime = System.nanoTime();
+		
+		// print sorted array
+		printArray(sortThis);
+		// print Elapsed time
+		System.out.printf("Elapsed Time: %f\n", (double)(endTime-startTime) / 1_000_000_000.0);
+		System.out.println();
+		
+		// reset Array
+		copyArray(sortThis, resetArr);
+		
+		/************* bubbleSort Test *************/
+		System.out.println("********* BubbleSort Test *********");
+		startTime = System.nanoTime();
+		bubbleSort.sort(sortThis);
+		endTime = System.nanoTime();
+		
+		// print sorted array
+		printArray(sortThis);
+		// print Elapsed time
+		System.out.printf("Elapsed Time: %f\n", (double)(endTime-startTime) / 1_000_000_000.0);
+		System.out.println();
+		
+		// reset Array
+		copyArray(sortThis, resetArr);
+		
+		/************* mergeSort Test *************/
+		System.out.println("********* MergeSort Test *********");
+		startTime = System.nanoTime();
+		mergeSort.sort(sortThis, 0, sortThis.length-1);
+		endTime = System.nanoTime();
+		
+		// print sorted array
+		printArray(sortThis);
+		// print Elapsed time
+		System.out.printf("Elapsed Time: %f\n", (double)(endTime-startTime) / 1_000_000_000.0);
+		System.out.println();
+		
+		// reset Array
+		copyArray(sortThis, resetArr);
+		
+		/************* quickSort Test *************/
+		System.out.println("********* QuickSort Test *********");
+		startTime = System.nanoTime();
+		quickSort.sort(sortThis, 0, sortThis.length-1);
+		endTime = System.nanoTime();
+		
+		// print sorted array
+		printArray(sortThis);
+		// print Elapsed time
+		System.out.printf("Elapsed Time: %f\n", (double)(endTime-startTime) / 1_000_000_000.0);
+		System.out.println();
+		
+		// reset Array
+		copyArray(sortThis, resetArr);
+
+		/************* heapSort Test *************/
+		System.out.println("********* HeapSort Test *********");
+		startTime = System.nanoTime();
+		heapSort.sort(sortThis);
+		endTime = System.nanoTime();
+		
+		// print sorted array
+		printArray(sortThis);
+		// print Elapsed time
+		System.out.printf("Elapsed Time: %f\n", (double)(endTime-startTime) / 1_000_000_000.0);
+		System.out.println();
+
+		// reset Array
+		copyArray(sortThis, resetArr);
+		
+		// searching comparison
+		int target = sortThis[(int)(Math.random() * sortThis.length)];
+		/************* linearSearch Test *************/
+		System.out.println("********* LinearSearch Test *********");
+		startTime = System.nanoTime();
+		System.out.printf("%d is found at index %d\n", target, linearSearch.find(sortThis, target));
+		endTime = System.nanoTime();
+
+		// print Elapsed time
+		System.out.printf("Elapsed Time: %f\n", (double)(endTime-startTime) / 1_000_000_000.0);
+		System.out.println();
+		
+		/************* binarySearch Test *************/
+		System.out.println("********* BinarySearch Test *********");
+		quickSort.sort(sortThis, 0, sortThis.length-1);
+		startTime = System.nanoTime();
+		System.out.printf("%d is found at index %d\n", target, binarySearch.find(sortThis, target, 0, sortThis.length-1));
+		endTime = System.nanoTime();
+
+		// print Elapsed time
+		System.out.printf("Elapsed Time: %f\n", (double)(endTime-startTime) / 1_000_000_000.0);
+		System.out.println();
+		
 	}
 	
-	static void resetArray(int[] arr) {
-		arr[0] = 5;
-		arr[1] = 3;
-		arr[2] = 7;
-		arr[3] = 9;
-		arr[4] = 1;
-		arr[5] = 8;
-		arr[6] = 6;
-		arr[7] = 2;
-		arr[8] = 4;
+	private static void generateRandomArray(int[] arr) {
+		for(int i = 0; i < arr.length; i++) {
+			arr[i] = (int)(Math.random() * 100000) + 1;
+		}
 	}
-
-	public static void main(String[] args) {
-		
-		int[] arr =  {5, 3, 7, 9, 1, 8, 6, 2, 4};
-		printArray(arr);
-		
-		// bubble sort test
-		bubbleSort bubble = new bubbleSort();
-		bubble.sort(arr);
-		printArray(arr);
-		
-		// insertion sort test
-		resetArray(arr);
-		insertionSort insertion = new insertionSort();
-		insertion.sort(arr);
-		printArray(arr);
-		
-		// merge sort test
-		resetArray(arr);
-		mergeSort merge = new mergeSort();
-		merge.sort(arr, 0, arr.length-1);
-		printArray(arr);
-		
-		// quick sort test
-		resetArray(arr);
-		quickSort quick = new quickSort();
-		quick.sort(arr, 0, arr.length - 1);
-		printArray(arr);
-		
-		// binary search test
-		binarySearch bin = new binarySearch();
-		int target = 2;
-		int index = bin.search(arr, target, 0, arr.length-1);
-		if(index == -1)
-			System.out.println("Not Found.");
-		else
-			System.out.printf("%d is Found at index: %d\n", target, index);
-		
-		
+	
+	static void printArray(int[] arr) {
+		if(enableArrayPrint) {
+			System.out.print("[");
+			for(int i = 0; i < arr.length; i++) {
+				if(i == arr.length-1)
+					System.out.printf(" %d ", arr[i]);
+				else
+					System.out.printf(" %d,", arr[i]);
+			}
+			System.out.println("]");
+		}
 	}
-
+	
+	static void copyArray(int[] arr, int[] oldArr) {
+		for(int i = 0; i < oldArr.length; i++)
+			arr[i] = oldArr[i];
+	}
 }

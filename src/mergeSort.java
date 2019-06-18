@@ -1,7 +1,7 @@
 
 public class mergeSort {
 
-	void sort(int[] arr, int start, int end) {
+	public static void sort(int[] arr, int start, int end) {
 		if(end > start) {
 			int mid = (start+end)/2;
 			sort(arr, start, mid);
@@ -10,7 +10,7 @@ public class mergeSort {
 		}
 	}
 	
-	void merge(int[] arr, int start, int mid, int end) {
+	private static void merge(int[] arr, int start, int mid, int end) {
 		int[] tempArray = new int[arr.length];
 		int start1 = start;
 		int end1 = mid;
@@ -47,4 +47,5 @@ public class mergeSort {
 		}
 		
 	}
+	
 }
